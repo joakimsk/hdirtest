@@ -22,7 +22,7 @@ class InvalidKey(Error):
 def get_secret_key():
     try:
         with open("key.secret") as myfile:
-            key = myfile.read()
+            key = myfile.read().splitlines()[0]
     except FileNotFoundError as fnf_error:
         print(fnf_error)
     else:
