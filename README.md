@@ -11,7 +11,7 @@ echo your-full-subscription-key > key.secret
 The .gitignore should leave this file out of your commits.
 
 ## Output
-In terminal, just a list over cases.
+In terminal, lists COVID-19 cases by date in Norway.
 
 Vest 0007-0042-Helse-Fonna-HF
 - 08-03-2020 0
