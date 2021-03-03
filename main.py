@@ -3,6 +3,7 @@
 import requests
 import json
 import datetime
+import re
 
 # Example access to Helsedirektoratet API
 # Read more and register at https://utvikler.helsedirektoratet.no/
@@ -10,8 +11,36 @@ import datetime
 
 subscription_key = 'put-your-subsription-key-here'
 
+class Error(Exception):
+    """Base class for other exceptions"""
+    pass
+
+class InvalidKey(Error):
+    """Raised when the key is invalid"""
+    pass
+
+def get_secret_key():
+    try:
+        with open("key.secret") as myfile:
+            key = myfile.read()
+    except FileNotFoundError as fnf_error:
+        print(fnf_error)
+    else:
+        pattern = re.compile("^([0-9a-f]){32}$") # must be 32 chars, hexadecimal
+
+        try:
+            if re.search(pattern, key):
+                return key 
+            else:
+                raise InvalidKey
+        except InvalidKey:
+            print('Key is invalid, check your key.secret file. Must be 32 hexadecimal characters only.')
+
+
 def main():
     print("helsedirektoratet API")
+    subscription_key = get_secret_key()
+    
     headers = {'Ocp-Apim-Subscription-Key': subscription_key}
     https_base = "https://api.helsedirektoratet.no"
     final_url = https_base + "/ProduktCovid19/Covid19statistikk/helseforetak"
